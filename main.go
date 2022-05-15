@@ -14,7 +14,7 @@ func main() {
 	var bytes []byte
 	var app interface{}
 
-	if bytes, err = ioutil.ReadFile("D:\\Goland\\Projects\\Nagger\\components\\config.yaml"); err == nil {
+	if bytes, err = ioutil.ReadFile("/Users/anurag.sv/Documents/Documents/Repos/NAGger/components/config.yaml"); err == nil {
 		if err = yaml.Unmarshal(bytes, &AppConfig); err == nil {
 			injector := components.NewNinjector(AppConfig)
 			if app, err = injector.BuildApp(); err == nil {

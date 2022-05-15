@@ -15,6 +15,7 @@ type NagServer struct {
 
 	/*Handlers*/
 	HealthCheckHandler HealthCheckHandler `inject:"inline"`
+	RecordHandler      RecordHandler      `inject:"inline"`
 }
 
 // @title NAGger - Swagger
@@ -33,6 +34,9 @@ func (self *NagServer) initRoutes() {
 
 	healthGroup := v1.Group("/health")
 	healthGroup.GET("/", self.HealthCheckHandler.HealthCheck)
+
+	recordGroup := v1.Group("/record")
+	recordGroup.POST("/create", self.RecordHandler.CreateRecord)
 
 	self.Ginengine.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
