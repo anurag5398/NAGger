@@ -16,7 +16,7 @@ type HealthCheckHandler struct {
 // @Tags Health
 // @Produce json
 // @Success 200 {object} string
-// @Router /health/ [get]
+// @Router /v1/health/ [get]
 func (self *HealthCheckHandler) HealthCheck(c *gin.Context) {
 	fmt.Println(self.Config)
 	if self.Config.InRotation {
