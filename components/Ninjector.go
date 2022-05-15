@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"net/http"
 )
 
@@ -24,6 +25,8 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 
 	engine := gin.Default()
 
+	db := initDB(self.config.DB)
+
 	err = self.graph.Provide(
 		&inject.Object{Value: engine},
 		&inject.Object{Value: &router},
@@ -33,6 +36,7 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 		}},
 		//Configs
 		&inject.Object{Value: self.config.Server, Name: "serverConfig"},
+		&inject.Object{Value: self.config.Database, Name: "databaseConfig"},
 
 		//Handler
 		&inject.Object{Value: &handlers.HealthCheckHandler{}},
@@ -43,6 +47,11 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 	}
 
 	return
+}
+
+func initDB(db config.DB) (db *gorm.DB) {
+	var err error
+
 }
 
 func NewNinjector(config config.AppConfig) AppInjector {

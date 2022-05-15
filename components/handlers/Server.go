@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	_ "NAGger/components/docs"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -25,6 +26,7 @@ type NagServer struct {
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @BasePath /v1
+
 func (self *NagServer) initRoutes() {
 	fmt.Println(self.Ginengine, self.Server)
 	v1 := self.Ginengine.Group("/v1")
