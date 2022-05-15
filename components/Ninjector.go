@@ -32,7 +32,7 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 			Handler: engine,
 		}},
 		//Configs
-		&inject.Object{Value: &self.config},
+		&inject.Object{Value: self.config.Server, Name: "serverConfig"},
 
 		//Handler
 		&inject.Object{Value: &handlers.HealthCheckHandler{}},
@@ -42,7 +42,6 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 		err = self.graph.Populate()
 	}
 
-	engine.Run()
 	return
 }
 

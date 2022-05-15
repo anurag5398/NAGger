@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -16,11 +17,16 @@ type NagServer struct {
 }
 
 // @title NAGger - Swagger
+// @version 1.0
+// @description This is the swagger API definition doc
 // @contact.email anurags2909@gmail.com
 
-// @BasePath /v1
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
+// @BasePath /v1
 func (self *NagServer) initRoutes() {
+	fmt.Println(self.Ginengine, self.Server)
 	v1 := self.Ginengine.Group("/v1")
 
 	healthGroup := v1.Group("/health")
@@ -31,5 +37,8 @@ func (self *NagServer) initRoutes() {
 
 func (self *NagServer) Start() (err error) {
 	self.initRoutes()
+
+	self.Server.ListenAndServe()
+
 	return
 }

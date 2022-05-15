@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"NAGger/models/config"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type HealthCheckHandler struct {
-	Config config.AppConfig `inject:"inline"`
+	Config config.Server `inject:"serverConfig"`
 }
 
 // @Summary Health Check
@@ -17,7 +18,8 @@ type HealthCheckHandler struct {
 // @Success 200 {object} string
 // @Router /health/ [get]
 func (self *HealthCheckHandler) HealthCheck(c *gin.Context) {
-	if self.Config.Server.InRotation {
+	fmt.Println(self.Config)
+	if self.Config.InRotation {
 		c.JSON(http.StatusOK, "OK")
 	} else {
 		c.JSON(http.StatusServiceUnavailable, "OOR-OOPS")
