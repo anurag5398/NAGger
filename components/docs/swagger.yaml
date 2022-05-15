@@ -1,0 +1,17 @@
+info:
+  contact: {}
+paths:
+  /health/:
+    get:
+      description: Gives OK if server is up and inRotation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health Check
+      tags:
+      - Health
+swagger: "2.0"
