@@ -1,7 +1,9 @@
 package components
 
 import (
+	"NAGger/components/dao"
 	"NAGger/components/handlers"
+	"NAGger/components/managers"
 	"NAGger/models/config"
 	"fmt"
 	"github.com/facebookgo/inject"
@@ -17,6 +19,13 @@ type AppInjector interface {
 type Ninjector struct {
 	graph  inject.Graph
 	config config.AppConfig
+}
+
+func NewNinjector(config config.AppConfig) AppInjector {
+	return &Ninjector{
+		graph:  inject.Graph{},
+		config: config,
+	}
 }
 
 func (self *Ninjector) BuildApp() (app interface{}, err error) {
@@ -36,10 +45,20 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 		}},
 		//Configs
 		&inject.Object{Value: self.config.Server, Name: "serverConfig"},
-		&inject.Object{Value: self.config.Database, Name: "databaseConfig"},
+		&inject.Object{Value: self.config.DB, Name: "databaseConfig"},
 
 		//Handler
 		&inject.Object{Value: &handlers.HealthCheckHandler{}},
+		&inject.Object{Value: &handlers.RecordHandler{}},
+
+		// Manager
+		&inject.Object{Value: &managers.RecordManager{}},
+
+		// Dao
+		&inject.Object{Value: &dao.RecordDao{}},
+
+		// DB
+		&inject.Object{Value: db},
 	)
 
 	if err == nil {
@@ -49,14 +68,8 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 	return
 }
 
-func initDB(db config.DB) (db *gorm.DB) {
-	var err error
+func initDB(dbConfig config.DB) (db *gorm.DB) {
+	// TODO
+	return
 
-}
-
-func NewNinjector(config config.AppConfig) AppInjector {
-	return &Ninjector{
-		graph:  inject.Graph{},
-		config: config,
-	}
 }
