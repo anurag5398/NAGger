@@ -6,6 +6,7 @@ import (
 )
 
 type RecordDaoInterface interface {
+	// CreateRecord Create Record
 	CreateRecord(c context.Context, record *entities.Record) (err error)
 }
 

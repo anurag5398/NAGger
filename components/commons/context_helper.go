@@ -1,4 +1,4 @@
-package helper
+package commons
 
 import (
 	"NAGger/models"
@@ -7,9 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-/**
-Extracts Transaction from Model and Returns
-*/
+// Tx Extracts Transaction from Model and Returns */
 func Tx(c context.Context) (tx *gorm.DB) {
 	//Context Must be Passed
 	if c != nil {
