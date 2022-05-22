@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"net/http"
 )
@@ -34,7 +35,10 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 
 	engine := gin.Default()
 
-	db := initDB(self.config.DB)
+	db, err := initDB(self.config.DB)
+	if err != nil {
+		return
+	}
 
 	err = self.graph.Provide(
 		&inject.Object{Value: engine},
@@ -57,7 +61,7 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 		// Dao
 		&inject.Object{Value: &dao.RecordDao{}},
 
-		// DB
+		//DB
 		&inject.Object{Value: db},
 	)
 
@@ -68,8 +72,18 @@ func (self *Ninjector) BuildApp() (app interface{}, err error) {
 	return
 }
 
-func initDB(dbConfig config.DB) (db *gorm.DB) {
-	// TODO
-	return
+func initDB(dbConf config.DB) (db *gorm.DB, err error) {
+	url := fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8&parseTime=True&loc=Local",
+		dbConf.User, dbConf.Password, dbConf.Host, dbConf.Database)
 
+	db, err = gorm.Open(mysql.Open(url), &gorm.Config{})
+
+	/* Configure DB */
+	if err == nil {
+		if dbMysql, err := db.DB(); err == nil {
+			dbMysql.SetMaxIdleConns(2)
+			dbMysql.SetMaxOpenConns(20)
+		}
+	}
+	return
 }

@@ -12,6 +12,12 @@ type RecordHandler struct {
 	RecordManager managers.RecordManagerInterface `inject:""`
 }
 
+// @Summary Create Record
+// @Description Create Record
+// @Tags Record
+// @Param request body requests.RecordCreate true "Request body"
+// @Success 200 {object} string
+// @Router /record/create [post]
 func (self *RecordHandler) CreateRecord(c *gin.Context) {
 	var content requests.RecordCreate
 	var err error

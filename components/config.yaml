@@ -6,6 +6,6 @@ server:
 db:
   host: localhost
   port: 3306
-  user: root
-  password:
+  user: nag12
+  password: nag123
   database: nagger

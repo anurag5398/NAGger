@@ -1,6 +1,8 @@
 package managers
 
 import (
+	"NAGger/components/dao"
+	"NAGger/models/entities"
 	"context"
 	"time"
 )
@@ -13,8 +15,17 @@ type RecordManagerInterface interface {
 }
 
 type RecordManager struct {
+	BaseManager `inject:"inline"`
+	Dao         dao.RecordDaoInterface `inject:""`
 }
 
 func (self *RecordManager) CreateRecord(c context.Context, content string) (err error) {
+	err = self.UseOrCreateTx(c, func(c context.Context) (err error) {
+		record := entities.Record{
+			Content: content,
+		}
+		err = self.Dao.CreateRecord(c, &record)
+		return
+	})
 	return
 }

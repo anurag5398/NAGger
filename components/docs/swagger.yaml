@@ -1,7 +1,33 @@
+definitions:
+  requests.RecordCreate:
+    properties:
+      content:
+        type: string
+    required:
+    - content
+    type: object
 info:
   contact: {}
 paths:
-  /health/:
+  /record/create:
+    post:
+      description: Create Record
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RecordCreate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create Record
+      tags:
+      - Record
+  /v1/health/:
     get:
       description: Gives OK if server is up and inRotation
       produces:
